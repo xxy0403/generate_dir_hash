@@ -80,7 +80,7 @@ func listFile(folder string, obj string) {
 			return err
 		}
 		if !f.Mode().IsRegular() {
-			// cannot copy non-regular files (e.g., directories, symlinks, named pipe, socket, devices, etc.)
+			// filter out non-regular files (e.g., directories, symlinks, named pipe, socket, devices, etc.)
 			return nil
 		}
 		//s
