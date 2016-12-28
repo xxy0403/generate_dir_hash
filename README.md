@@ -7,4 +7,4 @@ Get it with:
 
 Usage:
     
-    go run generate_dir_hash.go -o tmp/ta -i a*
+    go run generate_dir_hash_use_walk.go -p .. -o tmp/bywalk -i tmp git
