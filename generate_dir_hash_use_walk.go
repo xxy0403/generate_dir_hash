@@ -79,7 +79,8 @@ func listFile(folder string, obj string) {
 		if f == nil {
 			return err
 		}
-		if f.IsDir() {
+		if !f.Mode().IsRegular() {
+			// cannot copy non-regular files (e.g., directories, symlinks, named pipe, socket, devices, etc.)
 			return nil
 		}
 		//s
