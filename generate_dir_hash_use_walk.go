@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
+	"github.com/ivpusic/grpool"
 	"io"
-	//	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -84,20 +84,26 @@ func listFile(folder string, obj string) {
 			return nil
 		}
 		//s
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			size := f.Size()
-			sha_str, err := sha1File(folder)
+		pool := grpool.NewPool(2, 2)
+		defer pool.Release()
+		pool.WaitCount(10)
+		for i := 0; i < 10; i++ {
+			//		count := i
+			pool.JobQueue <- func() {
+				// say that job is done, so we can know how many jobs are finished
+				defer pool.JobDone()
+				size := f.Size()
+				sha_str, err := sha1File(folder)
 
-			if err != nil {
-				panic(err)
+				if err != nil {
+					panic(err)
+				}
+				str := folder + "," + sha_str + "," + strconv.FormatInt(size, 10) + "\n"
+				fi.WriteString(str)
+				//e
 			}
-			str := folder + "," + sha_str + "," + strconv.FormatInt(size, 10) + "\n"
-			fi.WriteString(str)
-			//e
-			//	println(folder)
-		}()
+		}
+		pool.WaitAll()
 		return nil
 	})
 	wg.Wait()
