@@ -1,5 +1,5 @@
 # generate_dir_hash
-A demo tool to generate direction hash
+A demo tool to generate direction hash.This tool employ 'grpool' to improve goroutinue performance, maybe you should install it by 'go get github.com/ivpusic/grpool' correspondingly.
 
 Get it with:
     
@@ -7,4 +7,6 @@ Get it with:
 
 Usage:
     
-    go run generate_dir_hash_use_walk.go -p .. -o tmp/bywalk -i tmp git
+    go run generate_dir_hash.go -p ../../ -o tmp/ -i tmp git
+    
+    
